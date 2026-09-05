@@ -1,0 +1,187 @@
+[
+  {
+    "path": "/lens/customer/keyword",
+    "methods": ["GET"],
+    "authorities": ["CustomerDetail_Read"]
+  },
+  {
+    "path": "/lens/customer/save",
+    "methods": ["POST"],
+    "authorities": ["CustomerDetail_Write"]
+  },
+  {
+    "path": "/lens/customer/Update",
+    "methods": ["PUT"],
+    "authorities": ["CustomerDetail_Write"]
+  },
+  {
+    "path": "/lens/customer/delete",
+    "methods": ["DELETE"],
+    "authorities": ["CustomerDetail_Write"]
+  },
+  {
+    "path": "/lens/customer/get",
+    "methods": ["GET"],
+    "authorities": ["CustomerDetail_Read"]
+  },
+  {
+    "path": "/lens/customer/getAll",
+    "methods": ["GET"],
+    "authorities": ["CustomerDetail_Read"]
+  },
+  {
+    "path": "/lens/customer/getAllCustomerByFilter",
+    "methods": ["GET"],
+    "authorities": ["CustomerDetail_Read"]
+  },
+  {
+    "path": "/lens/salesInquiry/save",
+    "methods": ["POST"],
+    "authorities": ["SalesInquiry_Write"]
+  },
+  {
+    "path": "/lens/salesInquiry/Update",
+    "methods": ["PUT"],
+    "authorities": ["SalesInquiry_Write"]
+  },
+  {
+    "path": "/lens/salesInquiry/delete",
+    "methods": ["DELETE"],
+    "authorities": ["SalesInquiry_Write"]
+  },
+  {
+    "path": "/lens/salesInquiry/get",
+    "methods": ["GET"],
+    "authorities": ["SalesInquiry_Read"]
+  },
+  {
+    "path": "/lens/salesInquiry/getAllSalesInquiryByFilter",
+    "methods": ["GET"],
+    "authorities": ["SalesInquiry_Read"]
+  },
+  {
+    "path": "/lens/pumSeal/**",
+    "methods": ["GET"],
+    "authorities": ["DRFInquiry_Read"]
+  },
+  {
+    "path": "/lens/pumpseal/**",
+    "methods": ["GET"],
+    "authorities": ["DRFInquiry_Read"]
+  },
+  {
+    "path": "/lens/pumSeal/**",
+    "methods": ["POST", "PUT", "DELETE"],
+    "authorities": ["DRFInquiry_Write"]
+  },
+  {
+    "path": "/lens/rotaryJoint/**",
+    "methods": ["GET"],
+    "authorities": ["DRFInquiry_Read"]
+  },
+  {
+    "path": "/lens/rotaryJoint/**",
+    "methods": ["POST", "PUT", "DELETE"],
+    "authorities": ["DRFInquiry_Write"]
+  },
+  {
+    "path": "/lens/apiPlan/**",
+    "methods": ["GET"],
+    "authorities": ["DRFInquiry_Read"]
+  },
+  {
+    "path": "/lens/apiPlan/**",
+    "methods": ["POST", "PUT", "DELETE"],
+    "authorities": ["DRFInquiry_Write"]
+  },
+  {
+    "path": "/lens/agitatorSeal/**",
+    "methods": ["GET"],
+    "authorities": ["DRFInquiry_Read"]
+  },
+  {
+    "path": "/lens/agitatorSeal/**",
+    "methods": ["POST", "PUT", "DELETE"],
+    "authorities": ["DRFInquiry_Write"]
+  },
+  {
+    "path": "/lens/OrderForwardingMemo/**",
+    "methods": ["GET"],
+    "authorities": ["OFM_Read"]
+  },
+  {
+    "path": "/lens/OrderForwardingMemo/**",
+    "methods": ["POST", "PUT", "DELETE"],
+    "authorities": ["OFM_Write"]
+  },
+  {
+    "path": "/lens/getAllOrderForwardingMemoByFilter",
+    "methods": ["GET"],
+    "authorities": ["OFM_Read"]
+  },
+  {
+    "path": "/lens/Quotation/**",
+    "methods": ["GET"],
+    "authorities": ["Quotation_Read"]
+  },
+  {
+    "path": "/lens/Quotation/**",
+    "methods": ["POST", "PUT", "DELETE"],
+    "authorities": ["Quotation_Write"]
+  },
+  {
+    "path": "/lens/getAllQuotationByFilter",
+    "methods": ["GET"],
+    "authorities": ["Quotation_Read"]
+  },
+  {
+    "path": "/lens/ofmCommunication/**",
+    "methods": ["GET"],
+    "authorities": ["OFM_Read"]
+  },
+  {
+    "path": "/lens/ofmCommunication/**",
+    "methods": ["POST", "PUT"],
+    "authorities": ["OFM_Write"]
+  },
+  {
+    "path": "/lens/update",
+    "methods": ["PUT"],
+    "authorities": ["OFM_Write"]
+  },
+  {
+    "path": "/lens/filter",
+    "methods": ["GET"],
+    "authorities": ["DRFInquiry_Read"]
+  },
+  {
+    "path": "/lens/fileUpload/**",
+    "methods": ["POST"],
+    "authorities": ["SalesInquiry_Write", "OFM_Write", "DRFInquiry_Write"]
+  },
+  {
+    "path": "/lens/file/download/**",
+    "methods": ["GET"],
+    "authorities": ["OFM_Read", "SalesInquiry_Read"]
+  },
+  {
+    "path": "/lens/drawingMasterTable",
+    "methods": ["GET"],
+    "authorities": ["DRFInquiry_Read", "SalesInquiry_Read"]
+  },
+  {
+    "path": "/lens/queryDrawingMasterTablebyColumn",
+    "methods": ["GET"],
+    "authorities": ["DRFInquiry_Read", "SalesInquiry_Read"]
+  },
+  {
+    "path": "/user/**",
+    "methods": ["GET", "POST", "PUT", "DELETE"],
+    "authorities": ["Admin_Authority"]
+  },
+  {
+    "path": "/lens/**",
+    "methods": ["GET", "POST", "PUT", "DELETE"],
+    "authorities": ["Admin_Authority"]
+  }
+]
