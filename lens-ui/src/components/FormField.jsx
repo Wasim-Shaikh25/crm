@@ -6,7 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useMasterOptions, useApiOptions } from '@/lib/useMasterOptions';
 import { labelize } from '@/lib/format';
-import { uploadFile, downloadFile } from '@/lib/upload';
+import { uploadFile, downloadFile, UPLOADS_ENABLED } from '@/lib/upload';
 import { toast } from 'sonner';
 import { Eye, Paperclip } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,9 @@ function FileInput({ field, value, onChange }) {
       toast.success('Uploaded');
     } catch {} finally { setBusy(false); }
   };
+  if (!UPLOADS_ENABLED) {
+    return <span className="text-xs text-muted-foreground">File upload is temporarily disabled</span>;
+  }
   return (
     <div className="flex items-center gap-2">
       <Button type="button" variant="outline" size="sm" asChild disabled={busy}>

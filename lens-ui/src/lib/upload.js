@@ -1,5 +1,8 @@
 import api from './axios';
 
+/** Feature flag: file uploads are temporarily disabled. Flip to true to re-enable. */
+export const UPLOADS_ENABLED = false;
+
 /** Upload a file; returns the stored filename. filetype: pumpseal|agitator|apiplan|rotaryjoint|ofm etc. */
 export const uploadFile = async (file, filetype) => {
   const fd = new FormData();

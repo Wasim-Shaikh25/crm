@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Eye, Paperclip, Pencil, Search } from 'lucide-react';
 import api from '@/lib/axios';
+import { UPLOADS_ENABLED } from '@/lib/upload';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -123,13 +124,15 @@ export default function OfmCommunication() {
               <Label>Comments</Label>
               <Textarea rows={2} maxLength={2000} value={form.comments} onChange={(e) => setForm({ ...form, comments: e.target.value })} />
             </div>
-            <div className="flex items-center gap-3">
-              <Button type="button" variant="outline" asChild>
-                <label className="cursor-pointer flex items-center gap-2"><Paperclip size={16} /> Attach file (optional)
-                  <input type="file" hidden onChange={(e) => setForm({ ...form, file: e.target.files[0] || null })} /></label>
-              </Button>
-              {form.file && <span className="text-sm text-muted-foreground">{form.file.name}</span>}
-            </div>
+            {UPLOADS_ENABLED && (
+              <div className="flex items-center gap-3">
+                <Button type="button" variant="outline" asChild>
+                  <label className="cursor-pointer flex items-center gap-2"><Paperclip size={16} /> Attach file (optional)
+                    <input type="file" hidden onChange={(e) => setForm({ ...form, file: e.target.files[0] || null })} /></label>
+                </Button>
+                {form.file && <span className="text-sm text-muted-foreground">{form.file.name}</span>}
+              </div>
+            )}
             <div className="flex gap-2">
               <Button type="submit">{form.id ? 'Update' : 'Submit'}</Button>
               {form.id && <Button type="button" variant="outline" onClick={() => setForm({ ...EMPTY, ofmNo: form.ofmNo })}>Cancel</Button>}
