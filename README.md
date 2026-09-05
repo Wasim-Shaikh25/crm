@@ -18,7 +18,7 @@ crm/
 - **Java 17** or higher
 - **Maven 3.6+**
 - **Node.js 18+** and npm
-- **SQL Server** (for production) or **H2** (for local development)
+- **SQL Server** (production/uat) or nothing (local profile uses SQLite)
 
 ## Quick Start
 
@@ -56,7 +56,7 @@ mvn spring-boot:run
 ```bash
 cd lens-ui
 npm install
-npm start
+npm run dev
 ```
 
 ## Access Points
@@ -68,48 +68,74 @@ npm start
 
 ## Environment Configuration
 
-### Backend Environment Variables
+### Profiles
 
-Create a `.env` file in `lens-svc/` or set system environment variables:
+| Profile | DB | Secrets |
+|---|---|---|
+| `local` (default in start scripts) | SQLite `lens-local.db`, auto-created + seeded | none needed |
+| `uat` / `prod` | SQL Server | external `application-secret.properties` (below) |
 
-```bash
-DB_USERNAME=your_db_username
-DB_PASSWORD=your_db_password
-DB_URL=jdbc:sqlserver://your-db-host:1433;databaseName=lensdb;encrypt=true;trustServerCertificate=true;
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRATION=86400000
-FILE_UPLOAD_DIR=./uploads
-SERVER_PORT=8080
+### Frontend env
+
+`lens-ui/.env` — copy from `.env.example`:
+
+```
+VITE_API_URL=            # empty = Vite dev proxy (local). In deployed envs set the API base URL.
 ```
 
-### Frontend Environment Variables
+---
 
-Create `.env` files in `lens-ui/`:
+## Production: passing secrets & DB connection
 
-**.env.development** (local):
+**Never commit secrets.** `prod`/`uat` profiles deliberately contain **no credentials** —
+they import an external file that lives only on the server:
+
+```properties
+# application-prod.properties (already in repo)
+spring.config.import=optional:file:C:/CRM/opt/prod/configuration/application-secret.properties
+cors.allowed-origins=${CORS_ALLOWED_ORIGINS:}
 ```
-REACT_APP_BASE_URL=http://localhost:8080
+
+### Step 1 — create the secret file on the server
+
+`C:\CRM\opt\prod\configuration\application-secret.properties` (any path; point
+`spring.config.import` at it):
+
+```properties
+# SQL Server connection
+spring.datasource.url=jdbc:sqlserver://<db-host>:1433;databaseName=lens;encrypt=true;trustServerCertificate=true;
+spring.datasource.username=<db_user>
+spring.datasource.password=<db_password>
+spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+# JWT - generate a base64 secret:  [Convert]::ToBase64String((1..64|%{Get-Random -Max 256}))
+jwt.secret=<base64-secret>
+jwt.expiration=86400000
 ```
 
-**.env.production** (production):
+File permissions: readable only by the service account (`icacls <file> /inheritance:r /grant:r "<svc-account>:R"`).
+
+### Step 2 — environment variables
+
+```powershell
+$env:CORS_ALLOWED_ORIGINS = "https://crm.example.com"   # comma-separated UI origins
+# (optional overrides) JWT_SECRET / JWT_EXPIRATION also work instead of the file keys
 ```
-REACT_APP_BASE_URL=https://your-production-api.com
-```
 
-## Local Development with H2 Database
+### Step 3 — run
 
-For local development without an external database, the application can use H2 in-memory database.
-
-1. Set the Spring profile to `dev`:
 ```bash
 cd lens-svc
-mvn spring-boot:run -Dspring.profiles.active=dev
+mvn spring-boot:run -Dspring-boot.run.profiles=prod
+# or deploy the WAR: mvn clean package -> target/*.war
 ```
 
-2. The H2 console will be available at: http://localhost:8080/h2-console
-   - JDBC URL: `jdbc:h2:mem:lensdb`
-   - Username: `sa`
-   - Password: (empty)
+### Rules
+
+- `application-secret.properties` / `.env` / real creds are **gitignored** — never commit.
+- Local dev needs **zero** secrets — `local` profile uses SQLite + a clearly-labeled dev JWT fallback.
+- The `Queries/` SQL files and `seed-*.sql` contain only non-sensitive test data.
+- Uploads default to `./uploads/` (override the `file.*Directory` keys for a fixed path).
 
 ## Seed Data
 
@@ -243,7 +269,7 @@ npm run build
 ### Database connection issues
 - Verify database credentials in environment variables
 - Check if database server is accessible
-- For H2, ensure dev profile is active
+- For local dev, the local profile uses SQLite (no DB server needed)
 
 ## Technologies
 
@@ -253,14 +279,14 @@ npm run build
 - Spring Data JPA
 - Spring Security
 - JWT Authentication
-- SQL Server / H2 Database
+- SQL Server (prod/uat) / SQLite (local)
 - Swagger/OpenAPI
 - Lombok
 - Apache POI
 
 ### Frontend
-- React 18
-- Material-UI (MUI)
+- React 19
+- Tailwind CSS v4 + shadcn/ui
 - Axios
 - React Router DOM
 - Formik & Yup
